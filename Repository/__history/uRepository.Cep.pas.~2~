@@ -1,0 +1,44 @@
+unit uRepository.Cep;
+
+interface
+uses
+  uModelCep,  System.Json,
+  REST.Client,
+  REST.HttpClient,
+  Rest.Types,Winapi.Messages, System.SysUtils, System.Variants, System.Classes;
+
+type
+
+  TRepositoryCep = class
+    public
+      function ListCep(pNumber: Integer): TModelCep;
+    private
+  end;
+implementation
+
+{ TRepositoryCep }
+
+function TRepositoryCep.ListCep(pNumber: Integer): TModelCep;
+var
+  restClient: TRESTClient;
+  restRequest: TRESTRequest;
+  restResponse: TRESTResponse;
+  modelCep:  TModelCep;
+begin
+  restClient := TRESTClient.Create(Nil);
+  restRequest := TRESTRequest.Create(Nil);
+  restResponse := TRESTResponse.Create(Nil);
+  modelCep :=  TModelCep.Create;
+
+   try
+      RESTClient.BaseURL :='https://viacep.com.br/ws/'+ pNumber+'/json/';
+
+
+   finally
+
+   end;
+
+
+end;
+
+end.

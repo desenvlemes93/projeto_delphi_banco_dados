@@ -1,0 +1,17 @@
+program ProjectDatabase;
+
+uses
+  Vcl.Forms,
+  uPrincipal in 'uPrincipal.pas' {Form1},
+  uModelCep in 'Model\uModelCep.pas',
+  uRepository.Cep in 'Repository\uRepository.Cep.pas',
+  uServiceCep in 'Service\uServiceCep.pas';
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TForm1, Form1);
+  Application.Run;
+end.
