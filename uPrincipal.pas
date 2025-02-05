@@ -72,7 +72,9 @@ end;
 procedure TuFormPrincipal.Button1Click(Sender: TObject);
 var
   clientRegister : TModelClient;
+  sNomeBanco: string;
 begin
+  sNomeBanco := '';
   try
     clientRegister := TModelClient.Create;
     clientRegister.Name := edtName2.Text;
@@ -91,6 +93,16 @@ begin
     else
     begin
       TServiceClient.InsertRegisterDatabse(clientRegister,RgDataBase.ItemIndex);
+      case RgDataBase.ItemIndex of
+      0: sNomeBanco := 'Oracle';
+      1: sNomeBanco := 'Firebird';
+      2: sNomeBanco := 'SQL Server';
+      3 : sNomeBanco := 'PostgresSQL';
+      end;
+
+       ShowMessage('Registro inserido no banco '+ sNomeBanco);
+
+
     end;
   finally
 

@@ -2,13 +2,14 @@ unit uRepositoryClient;
 
 interface
 uses uModelClient, Data.DB, Data.Win.ADODB,System.SysUtils, FireDAC.Comp.Client, FireDAC.Stan.Def, FireDAC.Stan.Async,
-  FireDAC.Phys.FB, FireDAC.Comp.DataSet, FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.DApt, FireDAC.FMXUI.Wait, Data.SqlExpr;
+  FireDAC.Phys.FB, FireDAC.Comp.DataSet, FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.DApt, FireDAC.FMXUI.Wait, Data.SqlExpr,udmModule;
 
 type TRepositoryClient = class
   private
     procedure InsertDatabaseFirebird(pClient: TModelClient);
     procedure InsertDatabaseSQLServer(pClient: TModelClient);
     procedure  InsertDataBaseOracle(pClient: TModelClient);
+    procedure InsertDataBasePostGres(pClient: TModelClient);
 
   public
     procedure SaveClient(pClient: TModelClient; pDatabase: Integer);
@@ -90,6 +91,35 @@ begin
 
 end;
 
+procedure TRepositoryClient.InsertDataBasePostGres(pClient: TModelClient);
+begin
+  dmModule.QryDados.close;
+  dmModule.QryDados.SQL.Clear;
+  dmModule.QryDados.SQL.Add('INSERT INTO public.cliente (   ');
+  dmModule.QryDados.SQL.Add('"NOME", ');
+  dmModule.QryDados.SQL.Add('"ENDERECO",');
+  dmModule.QryDados.SQL.Add('"BAIRRO",');
+  dmModule.QryDados.SQL.Add('"CIDADE",');
+  dmModule.QryDados.SQL.Add('"UF",');
+  dmModule.QryDados.SQL.Add('"CEP"');
+  dmModule.QryDados.SQL.Add(') VALUES (');
+   dmModule.QryDados.SQL.Add(':NOME, ');
+  dmModule.QryDados.SQL.Add(':ENDERECO,');
+  dmModule.QryDados.SQL.Add(':BAIRRO,');
+  dmModule.QryDados.SQL.Add(':CIDADE,');
+  dmModule.QryDados.SQL.Add(':UF,');
+  dmModule.QryDados.SQL.Add(':CEP');
+  dmModule.QryDados.SQL.Add(')');
+
+   dmModule.QryDados.ParamByName('NOME').AsString  := pClient.Name;
+  dmModule.QryDados.ParamByName('ENDERECO').asstring := pClient.Address;
+  dmModule.QryDados.ParamByName('BAIRRO').AsString := pClient.Bairro;
+  dmModule.QryDados.ParamByName('CIDADE').AsString := pClient.Location;
+  dmModule.QryDados.ParamByName('UF').AsString := pClient.Uf;
+  dmModule.QryDados.ParamByName('CEP').AsInteger := pClient.Cep;
+  dmModule.QryDados.ExecSQL;
+end;
+
 procedure TRepositoryClient.InsertDatabaseSQLServer(pClient: TModelClient);
 var
   sqlServer: TADOQuery;
@@ -134,7 +164,12 @@ begin
  else if pDatabase = 2 then
  begin
   InsertDatabaseSQLServer(pClient);
+ end
+ else if pDatabase = 3 then
+ begin
+   InsertDataBasePostGres(pClient);
  end;
+
 end;
 
 end.

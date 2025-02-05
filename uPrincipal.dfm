@@ -152,7 +152,8 @@ object uFormPrincipal: TuFormPrincipal
     Items.Strings = (
       'Oracle'
       'Firebird'
-      'SQL Server')
+      'SQL Server'
+      'PostgreSQL')
     TabOrder = 10
   end
 end
